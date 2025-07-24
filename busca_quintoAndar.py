@@ -16,7 +16,7 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
     options = webdriver.ChromeOptions()
     
     # ***** CORREÇÕES PARA HEADLESS AQUI *****
-    options.add_argument('--headless') 
+    #options.add_argument('--headless') 
     # 1. Definimos um tamanho de janela grande para o modo headless
     options.add_argument("--window-size=1920,1080") 
     
@@ -31,14 +31,34 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
     print(f"Acessando a URL: {url} (em modo headless)")
     driver.get(url)
 
+
+    time.sleep(0.3)
+    try:
+        # Lista de textos comuns em botões de aceite
+        textos_aceitar = ["Aceitar todos", "Aceitar", "Concordo", "Entendi"]
+        for texto in textos_aceitar:
+            xpath_botao_cookie = f"//button[contains(., '{texto}')]"
+            # Usamos find_elements para não quebrar o script se o botão não existir
+            botoes_cookie = driver.find_elements(By.XPATH, xpath_botao_cookie)
+            if botoes_cookie:
+                print(f"Pop-up com texto '{texto}' encontrado. Tentando clicar...")
+                botoes_cookie[0].click()
+                print("Pop-up clicado com sucesso.")
+                time.sleep(0.3) # Pausa para o pop-up desaparecer
+                break # Sai do loop se já clicamos em um
+    except Exception as e:
+        print(f"Não foi possível clicar no pop-up de cookie, ou ele não foi encontrado. Erro: {e}")
+
     # --- 2. ESPERAR CARREGAMENTO INICIAL ---
-    seletor_card_imovel = '[data-testid="house-card-container-rent"]'
+    seletor_card_imovel = '[data-testid="house-card-container"]'
     print("Aguardando o carregamento inicial dos imóveis...")
     try:
-        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, seletor_card_imovel)))
-        print("Imóveis iniciais carregados.")
+        # Aumentamos o tempo de espera para 30 segundos
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, seletor_card_imovel)))
+        print("Imóveis iniciais carregados com sucesso.")
     except Exception as e:
-        print(f"ERRO: A página inicial não carregou nenhum imóvel.")
+        print(f"ERRO CRÍTICO: A página inicial não carregou os imóveis a tempo.")
+        print("Causas prováveis: O site mudou o seletor dos cards ou há um novo pop-up bloqueando a tela.")
         driver.quit()
         return []
 
@@ -50,7 +70,7 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
             botao_ordenar = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.CSS_SELECTOR, seletor_botao_ordenar)))
             actions.move_to_element(botao_ordenar).click().perform()
             print(f"Botão 'Ordenar' clicado com sucesso.")
-            time.sleep(2)
+            time.sleep(0.3)
 
             xpath_opcao = f"//li[contains(., '{criterio_de_ordenacao}')]"
             
@@ -60,7 +80,7 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
             print(f"Opção '{criterio_de_ordenacao}' clicada com sucesso.")
 
             print("Aguardando a página reordenar os imóveis...")
-            time.sleep(5)
+            time.sleep(1)
         except Exception as e:
             print(f"ERRO durante a ordenação: {e}")
 
@@ -68,20 +88,29 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
     seletor_botao_ver_mais = '[data-testid="load-more-button"]'
     while True:
         try:
-            # 2. Forçamos a rolagem da página para o final ANTES de procurar o botão
-            print("Rolando para o final da página para encontrar o botão 'Ver mais'...")
+            # Rola a página para garantir que o botão (ou o fim da página) esteja visível
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(1) # Pequena pausa para a página reagir à rolagem
+            time.sleep(1)
 
+            # Encontra o botão
             load_more_button = driver.find_element(By.CSS_SELECTOR, seletor_botao_ver_mais)
-            driver.execute_script("arguments[0].click();", load_more_button)
-            print("Clicando em 'Ver mais'...")
-            time.sleep(3)
+            
+            # ***** LÓGICA DE PARADA INTELIGENTE AQUI *****
+            if load_more_button.is_enabled():
+                print("Botão 'Ver mais' está habilitado. Clicando...")
+                driver.execute_script("arguments[0].click();", load_more_button)
+                time.sleep(3) # Espera o conteúdo carregar
+            else:
+                # Se o botão for encontrado mas não estiver habilitado, paramos.
+                print("Botão 'Ver mais' encontrado, mas está desabilitado. Fim do carregamento.")
+                break
+
         except NoSuchElementException:
-            print("Botão 'Ver mais' não encontrado. Todos os imóveis foram carregados.")
+            # Se o botão não for mais encontrado no HTML, também paramos.
+            print("Botão 'Ver mais' não foi encontrado no HTML. Todos os imóveis foram carregados.")
             break
         except Exception as e:
-            print(f"Ocorreu um erro ao clicar no botão 'Ver mais': {e}")
+            print(f"Ocorreu um erro inesperado ao clicar no botão 'Ver mais': {e}")
             break
 
     # --- 5. EXTRAÇÃO FINAL ---
@@ -118,15 +147,3 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
             })
             
     return lista_de_imoveis
-
-
-url_alvo = 'https://www.quintoandar.com.br/alugar/imovel/morumbi-sao-paulo-sp-brasil/apartamento/2-quartos/de-1000-a-30000-reais/proximos-ao-metro'
-    
-imoveis_encontrados = buscar_imoveis_quinto_andar(url_alvo, criterio_de_ordenacao="Mais próximos")
-
-if imoveis_encontrados:
-    print(f"\n--- DADOS EXTRAÍDOS DE {len(imoveis_encontrados)} IMÓVEIS ---\n")
-    for imovel in imoveis_encontrados:
-        print(imovel)
-else:
-    print("\nNenhum imóvel foi extraído.")

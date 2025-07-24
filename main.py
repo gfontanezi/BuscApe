@@ -8,10 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
+from busca_quintoAndar import buscar_imoveis_quinto_andar
+
 
 tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
 
-bairro = str(input("Bairro: ")).strip().lower()
+bairro = str(input("Bairro: ")).strip().lower().replace(' ', '-')
 bairro = f"{bairro}-" if bairro else ""
 
 cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
@@ -52,6 +54,9 @@ def url_quintoAndar(tipo_venda, tipo_imovel, cidade, estado, bairro, quartos, pr
     if tipo_venda == "alugar":
         url = f'https://www.quintoandar.com.br/alugar/imovel/{bairro}{cidade}-{estado}-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-reais'
     elif tipo_venda == "comprar":
-        url = f'https://www.quintoandar.com.br/comprar/imovel/{cidade}-{estado}-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
+        url = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-{estado}-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
+    return url
 
+url = url_quintoAndar(tipo_venda, tipo_imovel, cidade, estado, bairro, quartos, preco_min, preco_max)
+imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, criterio_de_ordenacao="Mais próximos")
 
