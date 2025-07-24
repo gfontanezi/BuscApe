@@ -1,0 +1,6 @@
+Coisas a fazer
+1 - salvar além das informações do ap, a foto dele 
+2 - ordenar por custo beneficio (nao sei)
+3 - salvar em um excel ou algo assim, com as informações, distancia e foto, alem do link
+
+4 - fazer isso para outros apps como olx, etc
