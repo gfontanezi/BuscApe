@@ -119,15 +119,14 @@ def buscar_imoveis_quinto_andar(url, criterio_de_ordenacao=None):
             
     return lista_de_imoveis
 
-# --- EXECUÇÃO DO SCRIPT ---
-if __name__ == "__main__":
-    url_alvo = 'https://www.quintoandar.com.br/alugar/imovel/morumbi-sao-paulo-sp-brasil/apartamento/2-quartos/de-1000-a-30000-reais/proximos-ao-metro'
-    
-    imoveis_encontrados = buscar_imoveis_quinto_andar(url_alvo, criterio_de_ordenacao="Mais próximos")
 
-    if imoveis_encontrados:
-        print(f"\n--- DADOS EXTRAÍDOS DE {len(imoveis_encontrados)} IMÓVEIS ---\n")
-        for imovel in imoveis_encontrados:
-            print(imovel)
-    else:
-        print("\nNenhum imóvel foi extraído.")
+url_alvo = 'https://www.quintoandar.com.br/alugar/imovel/morumbi-sao-paulo-sp-brasil/apartamento/2-quartos/de-1000-a-30000-reais/proximos-ao-metro'
+    
+imoveis_encontrados = buscar_imoveis_quinto_andar(url_alvo, criterio_de_ordenacao="Mais próximos")
+
+if imoveis_encontrados:
+    print(f"\n--- DADOS EXTRAÍDOS DE {len(imoveis_encontrados)} IMÓVEIS ---\n")
+    for imovel in imoveis_encontrados:
+        print(imovel)
+else:
+    print("\nNenhum imóvel foi extraído.")
