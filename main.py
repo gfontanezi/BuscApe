@@ -1,16 +1,29 @@
 from busca_quintoAndar import buscar_imoveis_quinto_andar
 from vizualizar_dados import gerar_json, gerar_mapa, gerar_pagina_html
+from normalizar import encontrar_estacao, normalizar_texto
 
 
 tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
 
-bairro = str(input("Bairro: ")).strip().lower().replace(' ', '-')
-bairro = f"{bairro}-" if bairro else ""
+while True:
+    pesquisa = int(input("Pesquisar por \n[1] endereço\n[2] estação de metrô \nOpção: "))
+    if pesquisa in [1, 2]:
+        break
 
-cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
+if pesquisa == 1:
+    bairro = str(input("Bairro: ")).strip().lower().replace(' ', '-')
+    bairro = f"{bairro}-" if bairro else ""
 
-estado = str(input("Estado (sigla): ")).strip().lower()
+    cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
 
+    estado = str(input("Estado (sigla): ")).strip().lower()
+
+elif pesquisa == 2:
+    estacao = str(input("Estação de metrô: ")).strip().lower().replace(' ', '-')
+    estacao = normalizar_texto(estacao)
+    estacao_encontrada = encontrar_estacao(estacao)
+    
+    
 
 tipo_imovel = str(input("Casa, Apartamento ou Ambos? ")).strip().lower()
 if tipo_imovel == "ambos":
