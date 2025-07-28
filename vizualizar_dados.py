@@ -7,7 +7,7 @@ def gerar_json(imoveis_encontrados, tipo_venda):
         
         # Exemplo de como salvar em um arquivo JSON para ver o resultado
     import json
-    with open(f"imoveis_{tipo_venda}.json", 'w', encoding='utf-8') as f:
+    with open(f"ApêsEncontrados\imoveis_{tipo_venda}.json", 'w', encoding='utf-8') as f:
         json.dump(imoveis_encontrados, f, indent=4, ensure_ascii=False)
     print(f"Resultados salvos em 'imoveis_{tipo_venda}.json'")
 
@@ -36,10 +36,10 @@ def gerar_mapa(imoveis_encontrados):
         except:
             continue
 
-    mapa.save("mapa_imoveis.html")
+    mapa.save("ApêsEncontrados\mapa_imoveis.html")
 
 
-def gerar_pagina_html(imoveis_encontrados, nome_do_arquivo="galeria_imoveis.html"):
+def gerar_pagina_html(imoveis_encontrados):
     if not imoveis_encontrados:
         print("A lista de imóveis está vazia. Nenhum arquivo foi criado.")
         return
@@ -91,7 +91,7 @@ def gerar_pagina_html(imoveis_encontrados, nome_do_arquivo="galeria_imoveis.html
     </html>
     """
 
-    with open(nome_do_arquivo, 'w', encoding='utf-8') as arquivo_html:
+    with open("ApêsEncontrados\galeria_imoveis.html", 'w', encoding='utf-8') as arquivo_html:
         arquivo_html.write(html)
     
-    print(f"Dados salvos com sucesso no arquivo '{nome_do_arquivo}'! Abra-o no seu navegador.")
+    print(f"Dados salvos com sucesso no arquivo 'galeria_imoveis.html'! Abra-o no seu navegador.")

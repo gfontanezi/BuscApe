@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 from thefuzz import process, fuzz
 import unicodedata
 
-""" def encontrar_endereco_por_coordenadas(nome_da_estacao, arquivo_stops):
+def encontrar_endereco_por_coordenadas(nome_da_estacao, arquivo_stops):
     
     try:
         # Carrega o arquivo de paradas
@@ -20,31 +20,32 @@ import unicodedata
 
             # Utiliza o geopy para obter o endereço
             geolocator = Nominatim(user_agent="BuscApe") 
-            location = geolocator.reverse((lat, lon), exactly_one=True)
+            location = geolocator.reverse((lat, lon), exactly_one=True, language='pt-br')
 
             if location:
                 address = location.raw['address']
-                bairro = address.get('suburb', '') or address.get('quarter', '')
+                chaves_bairro = ['suburb', 'neighbourhood', 'quarter', 'city_district', 'district']
+                bairro = ''
+                for chave in chaves_bairro:
+                    if chave in address:
+                        bairro = address[chave]
+                        break
                 cidade = address.get('city', '') or address.get('town', '')
                 rua = address.get('road', '')
                 numero = address.get('house_number', '')
-
-                return f"{rua}, {numero} - {bairro}, {cidade}"
+                print(address)
+                print(f"{rua}, {numero} - {bairro}, {cidade}")
+                return bairro, cidade
             else:
-                return "Endereço não encontrado para as coordenadas."
+                print("Endereço não encontrado para as coordenadas.")
+                return
         else:
-            return "Estação não encontrada no arquivo GTFS."
+            print("Estação não encontrada no arquivo GTFS.")
+            return
 
     except Exception as e:
-        return f"Ocorreu um erro: {e}"
-
-# Exemplo de uso
-# Certifique-se de que o arquivo 'stops.txt' está no mesmo diretório ou forneça o caminho completo
-arquivo_gtfs_stops = 'stops.txt'
-nome_estacao = 'bras' # Exemplo de estação
-
-endereco = encontrar_endereco_por_coordenadas(nome_estacao, arquivo_gtfs_stops)
-print(f"O endereço da estação {nome_estacao} é: {endereco}") """
+        print(f"Ocorreu um erro: {e}")
+        return 
 
 
 
@@ -62,10 +63,11 @@ def encontrar_estacao(nome_digitado):
     if melhor_correspondencia:
             nome_encontrado, pontuacao = melhor_correspondencia
             if pontuacao >= 80:
-                
-                return print(f"Pesquisando por '{nome_encontrado}'...")
+                print(f"Pesquisando por '{nome_encontrado}'...")
+                return nome_encontrado
             else:
-                return print(f"Nenhuma estação suficientemente parecida encontrada. Melhor palpite: '{nome_encontrado}' (Pontuação: {pontuacao}).")
+                print(f"Nenhuma estação suficientemente parecida encontrada. Melhor palpite: '{nome_encontrado}' (Pontuação: {pontuacao}).")
+                return nome_encontrado
     else:
         return "Estação não encontrada."
 

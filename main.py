@@ -1,9 +1,12 @@
 from busca_quintoAndar import buscar_imoveis_quinto_andar
 from vizualizar_dados import gerar_json, gerar_mapa, gerar_pagina_html
-from normalizar import encontrar_estacao, normalizar_texto
+from normalizar import encontrar_estacao, normalizar_texto, encontrar_endereco_por_coordenadas
 
 
-tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
+while True:
+    tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
+    if tipo_venda in ["alugar", "comprar"]:
+        break
 
 while True:
     pesquisa = int(input("Pesquisar por \n[1] endereço\n[2] estação de metrô \nOpção: "))
@@ -16,14 +19,15 @@ if pesquisa == 1:
 
     cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
 
-    estado = str(input("Estado (sigla): ")).strip().lower()
-
 elif pesquisa == 2:
     estacao = str(input("Estação de metrô: ")).strip().lower().replace(' ', '-')
     estacao = normalizar_texto(estacao)
     estacao_encontrada = encontrar_estacao(estacao)
-    
-    
+    bairro, cidade = encontrar_endereco_por_coordenadas(estacao_encontrada, 'lat_lon_estacoes.csv')
+    bairro = bairro.lower().replace(' ', '-') if bairro else ""
+    bairro = f"{bairro}-" if bairro else ""
+    cidade = cidade.strip().lower().replace(' ', '-')
+
 
 tipo_imovel = str(input("Casa, Apartamento ou Ambos? ")).strip().lower()
 if tipo_imovel == "ambos":
@@ -77,17 +81,14 @@ elif tipo_venda == "comprar":
             print("Por favor, insira um valor numérico válido para o preço máximo do imóvel.")
 
 
-def url_quintoAndar(tipo_venda, tipo_imovel, cidade, estado, bairro, quartos, preco_min, preco_max):
-    if tipo_venda == "alugar":
-        url = f'https://www.quintoandar.com.br/alugar/imovel/{bairro}{cidade}-{estado}-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-reais'
-    elif tipo_venda == "comprar":
-        url = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-{estado}-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
-    return url
 
+if tipo_venda == "alugar":
+    url = f'https://www.quintoandar.com.br/alugar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-reais'
+elif tipo_venda == "comprar":
+    url = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
 
-url = url_quintoAndar(tipo_venda, tipo_imovel, cidade, estado, bairro, quartos, preco_min, preco_max)
 imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, criterio_de_ordenacao="Mais próximos")
 
 gerar_json(imoveis_encontrados_quintoAndar, tipo_venda)
+gerar_pagina_html(imoveis_encontrados_quintoAndar)
 gerar_mapa(imoveis_encontrados_quintoAndar)
-gerar_pagina_html(imoveis_encontrados_quintoAndar, nome_do_arquivo="galeria_imoveis_quintoAndar.html")
