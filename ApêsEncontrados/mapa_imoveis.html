@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4b6b01c7a564de304d4c3386b07e46c9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_4b6b01c7a564de304d4c3386b07e46c9" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4b6b01c7a564de304d4c3386b07e46c9 = L.map(
+                "map_4b6b01c7a564de304d4c3386b07e46c9",
+                {
+                    center: [-23.5505, -46.6333],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f065ee709d356c4ee136397bd3d37e11 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f065ee709d356c4ee136397bd3d37e11.addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+            var marker_02675345f9415f9eadc22ff97d482ed6 = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_8ec1b86d680ace23331c60568f32382c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_172120ad0ab09eb6827e8fc6bdb84539 = $(`<div id="html_172120ad0ab09eb6827e8fc6bdb84539" style="width: 100.0%; height: 100.0%;"><b>R$ 212000</b><br><b>15 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894702833/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A0%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_8ec1b86d680ace23331c60568f32382c.setContent(html_172120ad0ab09eb6827e8fc6bdb84539);
+            
+        
+
+        marker_02675345f9415f9eadc22ff97d482ed6.bindPopup(popup_8ec1b86d680ace23331c60568f32382c)
+        ;
+
+        
+    
+    
+            var marker_abef7a53ed4b0bfa4d7ebb81442107ec = L.marker(
+                [-23.5840835, -46.5572123],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_3efd56ae834b68746e6b365879548b0a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5973ffe738b954af2d064c475a963235 = $(`<div id="html_5973ffe738b954af2d064c475a963235" style="width: 100.0%; height: 100.0%;"><b>R$ 229500</b><br><b>29 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894940604/comprar/apartamento-1-quarto-vila-independencia-sao-paulo?from_route=%22search_results%22&house_tags=isSaleGoodPrice&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A2%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_3efd56ae834b68746e6b365879548b0a.setContent(html_5973ffe738b954af2d064c475a963235);
+            
+        
+
+        marker_abef7a53ed4b0bfa4d7ebb81442107ec.bindPopup(popup_3efd56ae834b68746e6b365879548b0a)
+        ;
+
+        
+    
+    
+            var marker_5564e36bb807204c8b45658f500edde3 = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_4031d0988e6ae8e6b2cc28ed46cfd30d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_60635ddb204c1bedf3fe64420cc7c11e = $(`<div id="html_60635ddb204c1bedf3fe64420cc7c11e" style="width: 100.0%; height: 100.0%;"><b>R$ 230000</b><br><b>17 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894919279/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A3%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_4031d0988e6ae8e6b2cc28ed46cfd30d.setContent(html_60635ddb204c1bedf3fe64420cc7c11e);
+            
+        
+
+        marker_5564e36bb807204c8b45658f500edde3.bindPopup(popup_4031d0988e6ae8e6b2cc28ed46cfd30d)
+        ;
+
+        
+    
+    
+            var marker_edb6547c8a02cec68e3a7c9c11d667e9 = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_c462c7fac89be8f333a5fe4834f9c512 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_577e9124880b2e1f9785a11dfa2a309b = $(`<div id="html_577e9124880b2e1f9785a11dfa2a309b" style="width: 100.0%; height: 100.0%;"><b>R$ 230000</b><br><b>24 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894112732/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A4%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_c462c7fac89be8f333a5fe4834f9c512.setContent(html_577e9124880b2e1f9785a11dfa2a309b);
+            
+        
+
+        marker_edb6547c8a02cec68e3a7c9c11d667e9.bindPopup(popup_c462c7fac89be8f333a5fe4834f9c512)
+        ;
+
+        
+    
+    
+            var marker_8b1de20a98d5f01c336b0819802ff6ae = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_b46a80192139cab1d21738685b715f57 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6308efead424ec5825b638c951d584c3 = $(`<div id="html_6308efead424ec5825b638c951d584c3" style="width: 100.0%; height: 100.0%;"><b>R$ 235000</b><br><b>15 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894845049/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A6%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_b46a80192139cab1d21738685b715f57.setContent(html_6308efead424ec5825b638c951d584c3);
+            
+        
+
+        marker_8b1de20a98d5f01c336b0819802ff6ae.bindPopup(popup_b46a80192139cab1d21738685b715f57)
+        ;
+
+        
+    
+    
+            var marker_29595c0fc5ec848048d36bad2d374948 = L.marker(
+                [-23.5851326, -46.5631375],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_ee4119fa1fa05eee756e335d733d26b7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_85b454f66f49a214ec16731f69a4c91e = $(`<div id="html_85b454f66f49a214ec16731f69a4c91e" style="width: 100.0%; height: 100.0%;"><b>R$ 250000</b><br><b>42 m²</b><br><a href='https://www.quintoandar.com.br/imovel/893354641/comprar/apartamento-2-quartos-vila-independencia-sao-paulo?from_route=%22search_results%22&house_tags=isSaleGoodPrice&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A7%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_ee4119fa1fa05eee756e335d733d26b7.setContent(html_85b454f66f49a214ec16731f69a4c91e);
+            
+        
+
+        marker_29595c0fc5ec848048d36bad2d374948.bindPopup(popup_ee4119fa1fa05eee756e335d733d26b7)
+        ;
+
+        
+    
+    
+            var marker_ec948dd4cc8fd9e3fc45befadaaf5194 = L.marker(
+                [-23.5863733, -46.5575578],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_669f1f58e8a30e7ef847b554ba0e59d4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2186d7ea91445f00ab22c24740f2c03a = $(`<div id="html_2186d7ea91445f00ab22c24740f2c03a" style="width: 100.0%; height: 100.0%;"><b>R$ 260000</b><br><b>45 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894349453/comprar/apartamento-2-quartos-vila-independencia-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A8%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_669f1f58e8a30e7ef847b554ba0e59d4.setContent(html_2186d7ea91445f00ab22c24740f2c03a);
+            
+        
+
+        marker_ec948dd4cc8fd9e3fc45befadaaf5194.bindPopup(popup_669f1f58e8a30e7ef847b554ba0e59d4)
+        ;
+
+        
+    
+    
+            var marker_1280eccc1502cbf4448b78d37f59669a = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_2436955f9d375635be685a3a0e0b9787 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_053874de4ea3ccda980dd15c75e506ad = $(`<div id="html_053874de4ea3ccda980dd15c75e506ad" style="width: 100.0%; height: 100.0%;"><b>R$ 260000</b><br><b>15 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894580000/comprar/apartamento-2-quartos-vila-santa-clara-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A9%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_2436955f9d375635be685a3a0e0b9787.setContent(html_053874de4ea3ccda980dd15c75e506ad);
+            
+        
+
+        marker_1280eccc1502cbf4448b78d37f59669a.bindPopup(popup_2436955f9d375635be685a3a0e0b9787)
+        ;
+
+        
+    
+    
+            var marker_ea1df95ff705c17051b8bab4ea6435ff = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_de2772a3ce85963bb9f216046de3152f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_09bd3bc37e88c501ea69d151f3ce5e22 = $(`<div id="html_09bd3bc37e88c501ea69d151f3ce5e22" style="width: 100.0%; height: 100.0%;"><b>R$ 265000</b><br><b>32 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894517306/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo?from_route=%22search_results%22&house_tags=isSaleGoodPrice&house_tags=newAd&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A10%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_de2772a3ce85963bb9f216046de3152f.setContent(html_09bd3bc37e88c501ea69d151f3ce5e22);
+            
+        
+
+        marker_ea1df95ff705c17051b8bab4ea6435ff.bindPopup(popup_de2772a3ce85963bb9f216046de3152f)
+        ;
+
+        
+    
+    
+            var marker_ccc20ca248a10aaef327742e6ee5817d = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_645e88650255f2c825ab618d224c90bf = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_172441c3942c6f700407706401d522cd = $(`<div id="html_172441c3942c6f700407706401d522cd" style="width: 100.0%; height: 100.0%;"><b>R$ 265000</b><br><b>30 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894157873/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo-sao-paulo?from_route=%22search_results%22&house_tags=isSaleGoodPrice&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A11%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_645e88650255f2c825ab618d224c90bf.setContent(html_172441c3942c6f700407706401d522cd);
+            
+        
+
+        marker_ccc20ca248a10aaef327742e6ee5817d.bindPopup(popup_645e88650255f2c825ab618d224c90bf)
+        ;
+
+        
+    
+    
+            var marker_6dc7d7b152b8fbfd849b6b36d713890d = L.marker(
+                [-23.5851326, -46.5631375],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_c52e36472c01fe7293bc7d62c38c33d4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_d4210b53037bd8bfa6b2ed2e1943b8a0 = $(`<div id="html_d4210b53037bd8bfa6b2ed2e1943b8a0" style="width: 100.0%; height: 100.0%;"><b>R$ 270000</b><br><b>44 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894730871/comprar/apartamento-2-quartos-vila-independencia-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A13%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_c52e36472c01fe7293bc7d62c38c33d4.setContent(html_d4210b53037bd8bfa6b2ed2e1943b8a0);
+            
+        
+
+        marker_6dc7d7b152b8fbfd849b6b36d713890d.bindPopup(popup_c52e36472c01fe7293bc7d62c38c33d4)
+        ;
+
+        
+    
+    
+            var marker_82c5958f6852508fd840c5e95208bbc6 = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_65d38eff087893bb3f4a23068dfde03b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_735ba2829e8d8203ccad1527500f9e48 = $(`<div id="html_735ba2829e8d8203ccad1527500f9e48" style="width: 100.0%; height: 100.0%;"><b>R$ 270000</b><br><b>26 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894406274/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A14%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_65d38eff087893bb3f4a23068dfde03b.setContent(html_735ba2829e8d8203ccad1527500f9e48);
+            
+        
+
+        marker_82c5958f6852508fd840c5e95208bbc6.bindPopup(popup_65d38eff087893bb3f4a23068dfde03b)
+        ;
+
+        
+    
+    
+            var marker_6b9245593c290a5fa14b10400db8bdfb = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_9702046992f6b57f340ee69226c75030 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_745c7a081d0507b2ff86f9394c0f678f = $(`<div id="html_745c7a081d0507b2ff86f9394c0f678f" style="width: 100.0%; height: 100.0%;"><b>R$ 270000</b><br><b>26 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894406267/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A15%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_9702046992f6b57f340ee69226c75030.setContent(html_745c7a081d0507b2ff86f9394c0f678f);
+            
+        
+
+        marker_6b9245593c290a5fa14b10400db8bdfb.bindPopup(popup_9702046992f6b57f340ee69226c75030)
+        ;
+
+        
+    
+    
+            var marker_7eb4c1fb28b4a1c74206151f740e32d3 = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_fb330116150c279e22f1b84b5d1787fa = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_05d7733dd3b75ab44c1d5f7842bababb = $(`<div id="html_05d7733dd3b75ab44c1d5f7842bababb" style="width: 100.0%; height: 100.0%;"><b>R$ 273000</b><br><b>26 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894258377/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A16%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_fb330116150c279e22f1b84b5d1787fa.setContent(html_05d7733dd3b75ab44c1d5f7842bababb);
+            
+        
+
+        marker_7eb4c1fb28b4a1c74206151f740e32d3.bindPopup(popup_fb330116150c279e22f1b84b5d1787fa)
+        ;
+
+        
+    
+    
+            var marker_b70154b294a926be9dec45b6ed676423 = L.marker(
+                [-23.5840835, -46.5572123],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_bda7acfbd160b619aaf805c83f9a7c36 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0397faac64b9bcaf82ebe7a9dd38d6fd = $(`<div id="html_0397faac64b9bcaf82ebe7a9dd38d6fd" style="width: 100.0%; height: 100.0%;"><b>R$ 275000</b><br><b>33 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894544766/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A17%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_bda7acfbd160b619aaf805c83f9a7c36.setContent(html_0397faac64b9bcaf82ebe7a9dd38d6fd);
+            
+        
+
+        marker_b70154b294a926be9dec45b6ed676423.bindPopup(popup_bda7acfbd160b619aaf805c83f9a7c36)
+        ;
+
+        
+    
+    
+            var marker_53322d272e56e520c434df0b451d2f2f = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_58b9cd69d6fc401be45f786e8f84c09c = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5350444cbd48e5023fef379680924058 = $(`<div id="html_5350444cbd48e5023fef379680924058" style="width: 100.0%; height: 100.0%;"><b>R$ 280000</b><br><b>26 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894546343/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&house_tags=newAd&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A18%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_58b9cd69d6fc401be45f786e8f84c09c.setContent(html_5350444cbd48e5023fef379680924058);
+            
+        
+
+        marker_53322d272e56e520c434df0b451d2f2f.bindPopup(popup_58b9cd69d6fc401be45f786e8f84c09c)
+        ;
+
+        
+    
+    
+            var marker_f5b6fb6e0b6de88ff87f57ee91338aba = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_022a4ad171bcd4d69f12aceca4cd83d0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_77bb992fd6a7cab76a512638086e4967 = $(`<div id="html_77bb992fd6a7cab76a512638086e4967" style="width: 100.0%; height: 100.0%;"><b>R$ 280000</b><br><b>31 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894857870/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A19%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_022a4ad171bcd4d69f12aceca4cd83d0.setContent(html_77bb992fd6a7cab76a512638086e4967);
+            
+        
+
+        marker_f5b6fb6e0b6de88ff87f57ee91338aba.bindPopup(popup_022a4ad171bcd4d69f12aceca4cd83d0)
+        ;
+
+        
+    
+    
+            var marker_f77728040125b4da79ee1f0c4fad0824 = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_bfea3a77a693b302838b6757cd73cb37 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_635465819c2da94877e3a891c0f4bc68 = $(`<div id="html_635465819c2da94877e3a891c0f4bc68" style="width: 100.0%; height: 100.0%;"><b>R$ 286000</b><br><b>26 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894400704/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A20%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_bfea3a77a693b302838b6757cd73cb37.setContent(html_635465819c2da94877e3a891c0f4bc68);
+            
+        
+
+        marker_f77728040125b4da79ee1f0c4fad0824.bindPopup(popup_bfea3a77a693b302838b6757cd73cb37)
+        ;
+
+        
+    
+    
+            var marker_f72f8d5f8fc27c26d8a3a3addf2b132b = L.marker(
+                [-23.5865804, -46.5467825],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_117063298bdb73b6108e961c71c93136 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5003ed0ecbf2f43f8a8efd9ec79fc502 = $(`<div id="html_5003ed0ecbf2f43f8a8efd9ec79fc502" style="width: 100.0%; height: 100.0%;"><b>R$ 289000</b><br><b>28 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894034588/comprar/apartamento-1-quarto-jardim-independencia-sao-paulo-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A21%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_117063298bdb73b6108e961c71c93136.setContent(html_5003ed0ecbf2f43f8a8efd9ec79fc502);
+            
+        
+
+        marker_f72f8d5f8fc27c26d8a3a3addf2b132b.bindPopup(popup_117063298bdb73b6108e961c71c93136)
+        ;
+
+        
+    
+    
+            var marker_28b65569e16686c66ab540234779d1b3 = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_1e422f887f9b30bef30b0fac733ea63a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_e47f5de2bc6aea8db9ea4306854305d5 = $(`<div id="html_e47f5de2bc6aea8db9ea4306854305d5" style="width: 100.0%; height: 100.0%;"><b>R$ 289000</b><br><b>31 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894712571/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A22%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_1e422f887f9b30bef30b0fac733ea63a.setContent(html_e47f5de2bc6aea8db9ea4306854305d5);
+            
+        
+
+        marker_28b65569e16686c66ab540234779d1b3.bindPopup(popup_1e422f887f9b30bef30b0fac733ea63a)
+        ;
+
+        
+    
+    
+            var marker_40a045a5184a931abe8e9a695186ae16 = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_1168ac232da4d3d02cf302f1848f741e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6385a4b020bd63e0dbdce11884f7f95c = $(`<div id="html_6385a4b020bd63e0dbdce11884f7f95c" style="width: 100.0%; height: 100.0%;"><b>R$ 290000</b><br><b>31 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894741876/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&house_tags=isSaleGoodPrice&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A23%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_1168ac232da4d3d02cf302f1848f741e.setContent(html_6385a4b020bd63e0dbdce11884f7f95c);
+            
+        
+
+        marker_40a045a5184a931abe8e9a695186ae16.bindPopup(popup_1168ac232da4d3d02cf302f1848f741e)
+        ;
+
+        
+    
+    
+            var marker_6035c81e5804ef780e8c5cd1460c554b = L.marker(
+                [-23.585092, -46.5460334],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_356e3147d0591cb0b1d507d64e94e130 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a00512e65946a84664644d2b191b9c58 = $(`<div id="html_a00512e65946a84664644d2b191b9c58" style="width: 100.0%; height: 100.0%;"><b>R$ 295500</b><br><b>29 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894885224/comprar/apartamento-1-quarto-vila-ema-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A24%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_356e3147d0591cb0b1d507d64e94e130.setContent(html_a00512e65946a84664644d2b191b9c58);
+            
+        
+
+        marker_6035c81e5804ef780e8c5cd1460c554b.bindPopup(popup_356e3147d0591cb0b1d507d64e94e130)
+        ;
+
+        
+    
+    
+            var marker_d8f426d59ec224c281295f3f6bfbc08e = L.marker(
+                [-23.5777972, -46.5598935],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_acf9f896bb627b0de1b90d5568577c6f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6081209d57dc65b6f3b7b6d92629f5c1 = $(`<div id="html_6081209d57dc65b6f3b7b6d92629f5c1" style="width: 100.0%; height: 100.0%;"><b>R$ 300000</b><br><b>30 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894701070/comprar/apartamento-1-quarto-vila-santa-clara-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A25%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_acf9f896bb627b0de1b90d5568577c6f.setContent(html_6081209d57dc65b6f3b7b6d92629f5c1);
+            
+        
+
+        marker_d8f426d59ec224c281295f3f6bfbc08e.bindPopup(popup_acf9f896bb627b0de1b90d5568577c6f)
+        ;
+
+        
+    
+    
+            var marker_953e5c199f2d3bd7fc3a964b63bbff58 = L.marker(
+                [-23.5841813, -46.5579241],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_85b1e17667224f4ef0279b6313ac0d68 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_546785964d02bbb1137fd42c05ff08b9 = $(`<div id="html_546785964d02bbb1137fd42c05ff08b9" style="width: 100.0%; height: 100.0%;"><b>R$ 300000</b><br><b>29 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894281884/comprar/apartamento-1-quarto-vila-independencia-sao-paulo?from_route=%22search_results%22&house_tags=buyRented&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A26%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_85b1e17667224f4ef0279b6313ac0d68.setContent(html_546785964d02bbb1137fd42c05ff08b9);
+            
+        
+
+        marker_953e5c199f2d3bd7fc3a964b63bbff58.bindPopup(popup_85b1e17667224f4ef0279b6313ac0d68)
+        ;
+
+        
+    
+    
+            var marker_c18cb6b121baf5c73f855a813a2869cb = L.marker(
+                [-23.5863733, -46.5575578],
+                {
+}
+            ).addTo(map_4b6b01c7a564de304d4c3386b07e46c9);
+        
+    
+        var popup_7659b97c2060bd51e4722154a8b4dc11 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_56b853be820ae6359a38a98f4805f526 = $(`<div id="html_56b853be820ae6359a38a98f4805f526" style="width: 100.0%; height: 100.0%;"><b>R$ 300000</b><br><b>28 m²</b><br><a href='https://www.quintoandar.com.br/imovel/894997219/comprar/apartamento-1-quarto-vila-independencia-sao-paulo?from_route=%22search_results%22&search_id=%222cd420b5-8f16-474b-b3df-f75481e5ef19%22&search_rank=%7B%22sortMode%22%3A%22lowestValue%22%2C%22searchMode%22%3A%22list%22%2C%22resultsOrigin%22%3A%22search%22%2C%22rank%22%3A27%2C%22personalization%22%3Atrue%7D' target='_blank'>Ver anúncio</a></div>`)[0];
+                popup_7659b97c2060bd51e4722154a8b4dc11.setContent(html_56b853be820ae6359a38a98f4805f526);
+            
+        
+
+        marker_c18cb6b121baf5c73f855a813a2869cb.bindPopup(popup_7659b97c2060bd51e4722154a8b4dc11)
+        ;
+
+        
+    
+</script>
+</html>

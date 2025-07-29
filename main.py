@@ -1,5 +1,5 @@
 from busca_quintoAndar import buscar_imoveis_quinto_andar
-from vizualizar_dados import gerar_json, gerar_mapa, gerar_pagina_html
+from vizualizar_dados import gerar_json, gerar_mapa, gerar_pagina_html, gerar_ghtml
 from normalizar import encontrar_estacao, normalizar_texto, encontrar_endereco_por_coordenadas
 
 
@@ -13,21 +13,18 @@ while True:
     if pesquisa in [1, 2]:
         break
 
+bairro = ""
+cidade = ""
 if pesquisa == 1:
     bairro = str(input("Bairro: ")).strip().lower().replace(' ', '-')
     bairro = f"{bairro}-" if bairro else ""
-
     cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
 
 elif pesquisa == 2:
     estacao = str(input("Estação de metrô: ")).strip().lower().replace(' ', '-')
     estacao = normalizar_texto(estacao)
     estacao_encontrada = encontrar_estacao(estacao)
-    bairro, cidade = encontrar_endereco_por_coordenadas(estacao_encontrada, 'lat_lon_estacoes.csv')
-    bairro = bairro.lower().replace(' ', '-') if bairro else ""
-    bairro = f"{bairro}-" if bairro else ""
-    cidade = cidade.strip().lower().replace(' ', '-')
-
+    
 
 tipo_imovel = str(input("Casa, Apartamento ou Ambos? ")).strip().lower()
 if tipo_imovel == "ambos":
@@ -87,8 +84,8 @@ if tipo_venda == "alugar":
 elif tipo_venda == "comprar":
     url = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
 
-imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, criterio_de_ordenacao="Mais próximos")
+imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, pesquisa, estacao_encontrada, criterio_de_ordenacao="Menor valor")
 
 gerar_json(imoveis_encontrados_quintoAndar, tipo_venda)
 gerar_pagina_html(imoveis_encontrados_quintoAndar)
-gerar_mapa(imoveis_encontrados_quintoAndar)
+gerar_ghtml(imoveis_encontrados_quintoAndar, tipo_venda)
