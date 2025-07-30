@@ -1,6 +1,8 @@
 from busca_quintoAndar import buscar_imoveis_quinto_andar
-from vizualizar_dados import gerar_json, gerar_mapa, gerar_pagina_html, gerar_ghtml
+from vizualizar_dados import gerar_json, gerar_galeria_html
 from normalizar import encontrar_estacao, normalizar_texto, encontrar_endereco_por_coordenadas
+import webbrowser
+import os
 
 
 while True:
@@ -87,5 +89,8 @@ elif tipo_venda == "comprar":
 imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, pesquisa, estacao_encontrada, criterio_de_ordenacao="Menor valor")
 
 gerar_json(imoveis_encontrados_quintoAndar, tipo_venda)
-gerar_pagina_html(imoveis_encontrados_quintoAndar)
-gerar_ghtml(imoveis_encontrados_quintoAndar, tipo_venda)
+gerar_galeria_html(imoveis_encontrados_quintoAndar, tipo_venda)
+
+caminho_arquivo = os.path.realpath("ApêsEncontrados/galeria_imoveis.html")
+print(f"\nAbrindo a galeria no seu navegador...")
+webbrowser.open("file://" + caminho_arquivo)

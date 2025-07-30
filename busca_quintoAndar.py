@@ -166,9 +166,27 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
             "area_m2": "N/A",
             chave_preco: "N/A",
             "url_anuncio": "N/A",
-            "url_imagem": "N/A"
+            "url_imagem": "N/A",
+            "quartos": "0",
+            "preco_condominio_rs": "0"
         }
 
+        condo_tag = card.find(string=re.compile(r'Condo\.'))
+        if condo_tag:
+            # O texto completo é algo como "R$ 1.000 Condo. + IPTU"
+            # Usamos Regex para pegar apenas os números
+            valor_match = re.search(r'([\d\.]+)', condo_tag)
+            if valor_match:
+                imovel_data['preco_condominio_rs'] = valor_match.group(1).replace('.', '')
+        
+        quartos_tag = card.find(string=re.compile(r'quarto', re.IGNORECASE))
+        if quartos_tag:
+            # O texto é algo como "18 m² · 1 quarto"
+            # O Regex (\d+)\s*quarto pega o número antes da palavra "quarto"
+            valor_match = re.search(r'(\d+)\s*quarto', quartos_tag.lower())
+            if valor_match:
+                imovel_data['quartos'] = valor_match.group(1)
+        
         # 2. Tenta extrair cada informação de forma independente
         
         # --- LINK DO ANÚNCIO ---
