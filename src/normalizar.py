@@ -6,15 +6,11 @@ import unicodedata
 def encontrar_endereco_por_coordenadas(nome_da_estacao, arquivo_stops):
     
     try:
-        # Carrega o arquivo de paradas
         df_stops = pd.read_csv(arquivo_stops)
 
-        # Busca pela estação (pode ser necessário ajustar a busca ao nome exato)
-        # O campo 'stop_name' geralmente contém o nome da parada/estação
         estacao = df_stops[df_stops['stop_name'].str.contains(nome_da_estacao, case=False, na=False)]
 
         if not estacao.empty:
-            # Pega a primeira correspondência
             lat = estacao.iloc[0]['stop_lat']
             lon = estacao.iloc[0]['stop_lon']
 

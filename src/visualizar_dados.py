@@ -1,24 +1,34 @@
+import os
+import json
+import folium
+from geopy.geocoders import Nominatim
+
+def garantir_diretorio(caminho):
+    pasta = os.path.dirname(caminho)
+    if pasta and not os.path.exists(pasta):
+        os.makedirs(pasta)
 
 def gerar_json(imoveis_encontrados, tipo_venda):
     if not imoveis_encontrados:
         print("A lista de imóveis está vazia. Nenhum arquivo foi criado.")
         return
     print(f"\n--- DADOS EXTRAÍDOS DE {len(imoveis_encontrados)} IMÓVEIS ---\n")
-        
-        # Exemplo de como salvar em um arquivo JSON para ver o resultado
-    import json
-    with open(f"ApêsEncontrados\imoveis_{tipo_venda}.json", 'w', encoding='utf-8') as f:
+
+    nome_arquivo = f"imoveis_{tipo_venda}.json"
+    caminho_arquivo = os.path.join("ApêsEncontrados", nome_arquivo)
+    
+    garantir_diretorio(caminho_arquivo)
+
+    with open(caminho_arquivo, 'w', encoding='utf-8') as f:
         json.dump(imoveis_encontrados, f, indent=4, ensure_ascii=False)
-    print(f"Resultados salvos em 'imoveis_{tipo_venda}.json'")
+    print(f"Resultados salvos em '{caminho_arquivo}'")
 
 
 def gerar_mapa(imoveis_encontrados):
     if not imoveis_encontrados:
         print("A lista de imóveis está vazia. Nenhum arquivo foi criado.")
         return
-    import folium
-    import time
-    from geopy.geocoders import Nominatim
+    
     geolocator = Nominatim(user_agent="meu_scraper_de_imoveis_v4")
     mapa = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
 
@@ -27,36 +37,25 @@ def gerar_mapa(imoveis_encontrados):
     imoveis_plotados = 0
     for imovel in imoveis_encontrados:
         try:
-            # --- LÓGICA FINAL DE LIMPEZA: EXTRAIR APENAS A RUA ---
             endereco_bruto = imovel.get('endereco', 'N/A')
             rua = ""
             
-            # rsplit(',', 1) divide a string a partir da DIREITA na primeira vírgula que encontrar.
-            # Isso isola a rua de forma eficaz.
             if ',' in endereco_bruto:
                 partes = endereco_bruto.rsplit(',', 1)
                 if len(partes) > 1:
-                    rua = partes[1].strip() # Pega o que veio depois da última vírgula
+                    rua = partes[1].strip()
             else:
-                rua = endereco_bruto # Se não houver vírgula, usa o texto todo
+                rua = endereco_bruto
 
-            # Se a extração da rua falhar, pulamos este imóvel.
             if not rua:
-                print(f"Não foi possível extrair um nome de rua válido de: '{endereco_bruto}'")
                 continue
 
-            # Criamos a busca mais limpa possível: "Nome da Rua, Cidade, País"
             endereco_a_buscar = f"{rua}, São Paulo, Brasil"
-            
-            time.sleep(1)
-
-            print(f"Geocodificando: '{endereco_a_buscar}'...")
             location = geolocator.geocode(endereco_a_buscar, timeout=10)
 
             if location:
                 imoveis_plotados += 1
-                print(f"-> SUCESSO! Localização encontrada.")
-
+                
                 preco = (imovel.get('preco_venda_rs') or 
                          imovel.get('preco_aluguel_rs') or 
                          imovel.get('preco') or 'N/A')
@@ -69,20 +68,19 @@ def gerar_mapa(imoveis_encontrados):
                     [location.latitude, location.longitude], 
                     popup=popup_html
                 ).add_to(mapa)
-            else:
-                print("-> Endereço não encontrado pelo geolocator.")
 
         except Exception as e:
-            print(f"!!! Ocorreu um erro ao processar o imóvel: {e}")
+            print(f"!!! Erro ao processar imóvel: {e}")
             continue
 
-    mapa.save("ApêsEncontrados\mapa_imoveis.html")
+    caminho_mapa = os.path.join("ApêsEncontrados", "mapa_imoveis.html")
+    garantir_diretorio(caminho_mapa)
+    
+    mapa.save(caminho_mapa)
+    print(f"Mapa salvo em: {caminho_mapa}")
 
 
 
-# Em vizualizar_dados.py
-
-# ... (suas funções gerar_json e gerar_mapa permanecem iguais) ...
 
 def gerar_galeria_html(imoveis_encontrados, tipo_venda):
     if not imoveis_encontrados:
@@ -91,7 +89,6 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
 
     chave_preco = 'preco_aluguel_rs' if tipo_venda == 'alugar' else 'preco_venda_rs'
 
-    # --- Início da criação do HTML (com todas as melhorias) ---
     
     html_template = """
 <!DOCTYPE html>
@@ -170,7 +167,6 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
 </html>
     """
 
-    # --- Criação dos cards individuais ---
     cards_list = []
     for imovel in imoveis_encontrados:
         # Pega todos os dados com valores padrão seguros
@@ -190,12 +186,13 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
                 preco_m2_formatado = f"{preco_m2_num:,}".replace(",", ".")
         except (ValueError, TypeError): pass
 
-        # Formatação do preço principal
         preco_formatado = f"{int(preco_str):,}".replace(",", ".") if preco_str.isdigit() else preco_str
         
-        # Criação do HTML do condomínio (apenas se existir)
         condominio_html = ''
-        if condominio_str and int(condominio_str) > 0:
+        if condominio_str == 'Não informado':
+            condominio_html = '<p class="condo-price">Condomínio não informado</p>'
+            condominio_str = '0'
+        elif condominio_str and int(condominio_str) > 0:
             condominio_formatado = f"{int(condominio_str):,}".replace(",", ".")
             condominio_html = f'<p class="condo-price">+ R$ {condominio_formatado} Condomínio</p>'
 
@@ -225,7 +222,6 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
         """
         cards_list.append(card_html)
     
-    # Separação do JavaScript para evitar erros de formatação
     js_script = """
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
@@ -288,12 +284,11 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
         });
     """
 
-    # Une todos os cards e insere no template
     final_html = html_template.format(cards_html="".join(cards_list), js_script=js_script)
 
-    # Salva o arquivo final
-    caminho_galeria = "ApêsEncontrados/galeria_imoveis.html"
+    caminho_galeria = os.path.join("ApêsEncontrados", "galeria_imoveis.html")
+    garantir_diretorio(caminho_galeria)
     with open(caminho_galeria, 'w', encoding='utf-8') as f:
         f.write(final_html)
     
-    print(f"\n✨ Galeria de imóveis salva em: {caminho_galeria}")
+    print(f"\nGaleria de imóveis salva em: {caminho_galeria}")

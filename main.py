@@ -1,9 +1,9 @@
-from busca_quintoAndar import buscar_imoveis_quinto_andar
-from vizualizar_dados import gerar_json, gerar_galeria_html
-from normalizar import encontrar_estacao, normalizar_texto, encontrar_endereco_por_coordenadas
+from src.busca_quinto_andar import buscar_imoveis_quinto_andar
+from src.busca_vivareal import buscar_imoveis_vivareal
+from src.visualizar_dados import gerar_json, gerar_galeria_html
+from src.normalizar import encontrar_estacao, normalizar_texto, encontrar_endereco_por_coordenadas
 import webbrowser
 import os
-
 
 while True:
     tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
@@ -17,7 +17,9 @@ while True:
 
 bairro = ""
 cidade = ""
+rua = ""
 if pesquisa == 1:
+    rua = str(input("Rua: ")).strip().lower().replace(' ', '-')
     bairro = str(input("Bairro: ")).strip().lower().replace(' ', '-')
     bairro = f"{bairro}-" if bairro else ""
     cidade = str(input("Cidade: ")).strip().lower().replace(' ', '-')
@@ -26,9 +28,11 @@ elif pesquisa == 2:
     estacao = str(input("Estação de metrô: ")).strip().lower().replace(' ', '-')
     estacao = normalizar_texto(estacao)
     estacao_encontrada = encontrar_estacao(estacao)
+    bairro, cidade = encontrar_endereco_por_coordenadas(estacao_encontrada, 'lat_lon_estacoes.csv')
     
 
 tipo_imovel = str(input("Casa, Apartamento ou Ambos? ")).strip().lower()
+
 if tipo_imovel == "ambos":
     tipo_imovel = ""
 elif tipo_imovel in "casa apartamento":
@@ -82,15 +86,24 @@ elif tipo_venda == "comprar":
 
 
 if tipo_venda == "alugar":
-    url = f'https://www.quintoandar.com.br/alugar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-reais'
+    url_quintoAndar = f'https://www.quintoandar.com.br/alugar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-reais'
 elif tipo_venda == "comprar":
-    url = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
+    url_quintoAndar = f'https://www.quintoandar.com.br/comprar/imovel/{bairro}{cidade}-sp-brasil/{tipo_imovel}{quartos}proximo-ao-metro/de-{preco_min}-a-{preco_max}-venda'
 
-imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url, pesquisa, estacao_encontrada, criterio_de_ordenacao="Menor valor")
+imoveis_encontrados_quintoAndar = buscar_imoveis_quinto_andar(url_quintoAndar, pesquisa, estacao_encontrada, criterio_de_ordenacao="Menor valor")
 
-gerar_json(imoveis_encontrados_quintoAndar, tipo_venda)
-gerar_galeria_html(imoveis_encontrados_quintoAndar, tipo_venda)
 
-caminho_arquivo = os.path.realpath("ApêsEncontrados/galeria_imoveis.html")
+if tipo_venda == "alugar":
+    url_vivaReal = f'https://www.vivareal.com.br/aluguel/sp/'
+if tipo_venda == "comprar":
+    url_vivaReal = f'https://www.vivareal.com.br/venda/sp/'
+
+imoveis_encontrados_vivaReal = buscar_imoveis_vivareal(url_vivaReal, cidade, bairro, rua, tipo_imovel, quartos, preco_min, preco_max, perto_metro=True)
+
+todos_imoveis = imoveis_encontrados_quintoAndar + imoveis_encontrados_vivaReal
+gerar_json(todos_imoveis, tipo_venda)
+gerar_galeria_html(todos_imoveis, tipo_venda)
+
+caminho_arquivo = os.path.join(os.getcwd(), "ApêsEncontrados", "galeria_imoveis.html")
 print(f"\nAbrindo a galeria no seu navegador...")
 webbrowser.open("file://" + caminho_arquivo)

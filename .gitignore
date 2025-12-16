@@ -1,1 +1,20 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes virtuais
+venv/
+env/
 .env
+
+# Resultados gerados (não queremos versionar os imóveis que você achou hoje)
+ApêsEncontrados/
+output/
+*.json
+*.html
+!output/.gitkeep
+
+# Logs e sistema
+*.log
+.DS_Store
