@@ -3,6 +3,8 @@ import json
 import folium
 from geopy.geocoders import Nominatim
 
+PASTA_OUTPUT = "output"
+
 def garantir_diretorio(caminho):
     pasta = os.path.dirname(caminho)
     if pasta and not os.path.exists(pasta):
@@ -15,13 +17,13 @@ def gerar_json(imoveis_encontrados, tipo_venda):
     print(f"\n--- DADOS EXTRAÍDOS DE {len(imoveis_encontrados)} IMÓVEIS ---\n")
 
     nome_arquivo = f"imoveis_{tipo_venda}.json"
-    caminho_arquivo = os.path.join("ApêsEncontrados", nome_arquivo)
+    caminho_arquivo = os.path.join(PASTA_OUTPUT, nome_arquivo)
     
     garantir_diretorio(caminho_arquivo)
 
     with open(caminho_arquivo, 'w', encoding='utf-8') as f:
         json.dump(imoveis_encontrados, f, indent=4, ensure_ascii=False)
-    print(f"Resultados salvos em '{caminho_arquivo}'")
+    print(f"📄 JSON salvo em: '{caminho_arquivo}'")
 
 
 def gerar_mapa(imoveis_encontrados):
@@ -32,7 +34,7 @@ def gerar_mapa(imoveis_encontrados):
     geolocator = Nominatim(user_agent="meu_scraper_de_imoveis_v4")
     mapa = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
 
-    print(f"\nIniciando a geração do mapa para {len(imoveis_encontrados)} imóveis...")
+    print(f"\n🗺️ Gerando mapa para {len(imoveis_encontrados)} imóveis...")
     
     imoveis_plotados = 0
     for imovel in imoveis_encontrados:
@@ -73,11 +75,10 @@ def gerar_mapa(imoveis_encontrados):
             print(f"!!! Erro ao processar imóvel: {e}")
             continue
 
-    caminho_mapa = os.path.join("ApêsEncontrados", "mapa_imoveis.html")
+    caminho_mapa = os.path.join(PASTA_OUTPUT, "mapa_imoveis.html")
     garantir_diretorio(caminho_mapa)
-    
     mapa.save(caminho_mapa)
-    print(f"Mapa salvo em: {caminho_mapa}")
+    print(f"🗺️ Mapa salvo em: {caminho_mapa}")
 
 
 
@@ -286,9 +287,10 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
 
     final_html = html_template.format(cards_html="".join(cards_list), js_script=js_script)
 
-    caminho_galeria = os.path.join("ApêsEncontrados", "galeria_imoveis.html")
+    caminho_galeria = os.path.join(PASTA_OUTPUT, "galeria_imoveis.html")
     garantir_diretorio(caminho_galeria)
+    
     with open(caminho_galeria, 'w', encoding='utf-8') as f:
         f.write(final_html)
     
-    print(f"\nGaleria de imóveis salva em: {caminho_galeria}")
+    print(f"✨ Galeria HTML salva em: {caminho_galeria}")

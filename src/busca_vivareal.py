@@ -143,8 +143,17 @@ def buscar_imoveis_vivareal(transacao, cidade, bairro, rua="", tipo_imovel="ambo
 
     print(f"INFO: Buscando imóveis para '{transacao.upper()}'")
 
-    print("Iniciando o navegador..."); options = webdriver.ChromeOptions(); options.add_argument("--start-maximized"); options.add_argument("--disable-notifications")
-    options.add_experimental_option('excludeSwitches', ['enable-logging']); service = ChromeService(ChromeDriverManager().install()); driver = webdriver.Chrome(service=service, options=options)
+    print("Iniciando o navegador...")
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-blink-features=AutomationControlled") 
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    service = ChromeService(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     
     
     dados_dos_imoveis = []
@@ -179,13 +188,13 @@ def buscar_imoveis_vivareal(transacao, cidade, bairro, rua="", tipo_imovel="ambo
         
         if dados_dos_imoveis:
             import os
-            caminho_arquivo = os.path.join("ApêsEncontrados", "imoveis_vivareal.json")
+            caminho_arquivo = os.path.join("output", "imoveis_vivareal.json")
             pasta = os.path.dirname(caminho_arquivo)
             if not os.path.exists(pasta):
                 os.makedirs(pasta)
             with open(caminho_arquivo, 'w', encoding='utf-8') as f:
                 json.dump(dados_dos_imoveis, f, ensure_ascii=False, indent=4)
-            print(f"\n✅ SUCESSO! {len(dados_dos_imoveis)} imóveis de {total_de_paginas} página(s) foram salvos em 'ApêsEncontrados/imoveis_vivareal.json'.")
+            print(f"\n✅ VivaReal: {len(dados_dos_imoveis)} imóveis salvos em '{caminho_arquivo}'.")
         else:
             print("\nAVISO: A automação foi concluída, mas nenhum dado foi raspado dos cards encontrados.")
 

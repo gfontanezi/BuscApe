@@ -13,7 +13,7 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
     print("Iniciando o driver com undetected-chromedriver em modo headless...")
     driver = None
     try:
-        driver = uc.Chrome(headless=True, use_subprocess=True)
+        driver = uc.Chrome(headless=False, use_subprocess=True)
         driver.set_window_size(1920, 1080)
         driver.get(url)
     except Exception as e:
@@ -78,7 +78,7 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
     seletor_card_imovel = '[data-testid="house-card-container"]'
     print("Aguardando o carregamento inicial dos imóveis...")
     try:
-        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, seletor_card_imovel)))
+        WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.CSS_SELECTOR, seletor_card_imovel)))
         print("Imóveis iniciais carregados com sucesso.")
     except Exception as e:
         print(f"ERRO: A página inicial não carregou os imóveis a tempo.")

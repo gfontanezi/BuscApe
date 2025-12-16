@@ -5,6 +5,10 @@ from src.normalizar import encontrar_estacao, normalizar_texto, encontrar_endere
 import webbrowser
 import os
 
+os.system('cls' if os.name == 'nt' else 'clear')
+
+print("=== 🏢 BUSCAPE - Buscador Profissional ===")
+
 while True:
     tipo_venda = str(input("Alugar ou Comprar? ")).strip().lower()
     if tipo_venda in ["alugar", "comprar"]:
@@ -101,9 +105,16 @@ if tipo_venda == "comprar":
 imoveis_encontrados_vivaReal = buscar_imoveis_vivareal(url_vivaReal, cidade, bairro, rua, tipo_imovel, quartos, preco_min, preco_max, perto_metro=True)
 
 todos_imoveis = imoveis_encontrados_quintoAndar + imoveis_encontrados_vivaReal
-gerar_json(todos_imoveis, tipo_venda)
-gerar_galeria_html(todos_imoveis, tipo_venda)
+if todos_imoveis:
+    gerar_json(todos_imoveis, tipo_venda)
+    gerar_galeria_html(todos_imoveis, tipo_venda)
 
-caminho_arquivo = os.path.join(os.getcwd(), "ApêsEncontrados", "galeria_imoveis.html")
-print(f"\nAbrindo a galeria no seu navegador...")
-webbrowser.open("file://" + caminho_arquivo)
+    # Abre usando a pasta output
+    caminho_arquivo = os.path.join(os.getcwd(), "output", "galeria_imoveis.html")
+    if os.path.exists(caminho_arquivo):
+        print(f"\n🌐 Abrindo galeria...")
+        webbrowser.open("file://" + caminho_arquivo)
+    else:
+        print(f"Arquivo não encontrado: {caminho_arquivo}")
+else:
+    print("\n❌ Nenhum imóvel encontrado.")

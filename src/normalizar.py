@@ -2,11 +2,23 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 from thefuzz import process, fuzz
 import unicodedata
+import os
+
+def get_data_path(filename):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(script_dir, '..', 'data', filename)
+    return os.path.abspath(data_path)
 
 def encontrar_endereco_por_coordenadas(nome_da_estacao, arquivo_stops):
     
     try:
-        df_stops = pd.read_csv(arquivo_stops)
+        caminho_arquivo = get_data_path(arquivo_stops)
+        
+        if not os.path.exists(caminho_arquivo):
+            print(f"❌ Erro: Arquivo '{arquivo_stops}' não encontrado em: {caminho_arquivo}")
+            return "", ""
+
+        df_stops = pd.read_csv(caminho_arquivo)
 
         estacao = df_stops[df_stops['stop_name'].str.contains(nome_da_estacao, case=False, na=False)]
 
@@ -29,8 +41,7 @@ def encontrar_endereco_por_coordenadas(nome_da_estacao, arquivo_stops):
                 cidade = address.get('city', '') or address.get('town', '')
                 rua = address.get('road', '')
                 numero = address.get('house_number', '')
-                print(address)
-                print(f"{rua}, {numero} - {bairro}, {cidade}")
+                print(f"📍 Endereço base: {rua}, {bairro} - {cidade}")
                 return bairro, cidade
             else:
                 print("Endereço não encontrado para as coordenadas.")
@@ -52,19 +63,28 @@ def normalizar_texto(texto):
     return "".join(c for c in texto_normalizado if unicodedata.category(c) != 'Mn').lower()
 
 def encontrar_estacao(nome_digitado):
-    arquivo_estacoes = 'lista_estacoes_normalizadas.txt'
-    df_stops = pd.read_csv(arquivo_estacoes)
-    lista_estacoes = df_stops.iloc[:,0].tolist()
-    melhor_correspondencia = process.extractOne(nome_digitado, lista_estacoes)
-    if melhor_correspondencia:
+    nome_arquivo = 'lista_estacoes_normalizadas.txt'
+    caminho_arquivo = get_data_path(nome_arquivo)
+    
+    if not os.path.exists(caminho_arquivo):
+        print(f"❌ Erro Crítico: '{nome_arquivo}' não encontrado na pasta 'data'.")
+        return "Estação não encontrada."
+
+    try:
+        df_stops = pd.read_csv(caminho_arquivo, header=None)
+        lista_estacoes = df_stops.iloc[:,0].tolist()
+        
+        melhor_correspondencia = process.extractOne(nome_digitado, lista_estacoes)
+        if melhor_correspondencia:
             nome_encontrado, pontuacao = melhor_correspondencia
             if pontuacao >= 80:
-                print(f"Pesquisando por '{nome_encontrado}'...")
+                print(f"✅ Estação identificada: '{nome_encontrado}'")
                 return nome_encontrado
             else:
-                print(f"Nenhuma estação suficientemente parecida encontrada. Melhor palpite: '{nome_encontrado}' (Pontuação: {pontuacao}).")
+                print(f"⚠️ Nenhuma correspondência exata. Usando: '{nome_encontrado}' (Pontuação: {pontuacao})")
                 return nome_encontrado
-    else:
+    except Exception as e:
+        print(f"Erro ao ler lista de estações: {e}")
         return "Estação não encontrada."
 
 
