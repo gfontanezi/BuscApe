@@ -1,8 +1,6 @@
 # 🏢 BuscApe - Automação de Busca Imobiliária
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Status](https://img.shields.io/badge/Status-Concluído-success)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 > **BuscApe** é uma ferramenta inteligente de *Web Scraping* e automação que unifica a busca de imóveis em São Paulo, coletando dados do **QuintoAndar** e **VivaReal** simultaneamente. Seu diferencial é a busca baseada em proximidade de estações de metrô e trem, gerando visualizações interativas.
 
@@ -26,7 +24,6 @@
     - Utiliza *Fuzzy Matching* para entender nomes de estações digitados incorretamente.
 - **📊 Visualização de Dados**:
     - Gera uma **Galeria HTML** moderna para navegar pelos imóveis encontrados.
-    - Cria um **Mapa Interativo (Folium)** mostrando a localização exata dos apartamentos.
     - Exporta dados brutos em **JSON** para análise posterior.
 - **🧹 Tratamento de Dados**: Normalização de textos, limpeza de strings de preços e cálculo automático de preço por m².
 
@@ -41,7 +38,7 @@ O projeto foi desenvolvido utilizando as seguintes bibliotecas e ferramentas:
 | **Linguagem** | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white) |
 | **Web Scraping** | `Selenium` `Undetected Chromedriver` `BeautifulSoup4` |
 | **Dados & Análise** | `Pandas` `JSON` `TheFuzz` (Fuzzy Logic) |
-| **Geolocalização** | `Geopy` (Nominatim API) `Folium` (Mapas) |
+| **Geolocalização** | `Geopy` (Nominatim API) |
 | **Automação** | `Webbrowser` `OS` |
 
 ---
