@@ -41,63 +41,6 @@ def gerar_json(imoveis_encontrados, tipo_venda):
     print(f"📄 JSON salvo em: '{caminho_arquivo}'")
 
 
-def gerar_mapa(imoveis_encontrados):
-    if not imoveis_encontrados:
-        return
-    
-    geolocator = Nominatim(user_agent="meu_scraper_de_imoveis_v5")
-    mapa = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
-
-    print(f"\n🗺️ Gerando mapa para {len(imoveis_encontrados)} imóveis...")
-    
-    imoveis_plotados = 0
-    for imovel in imoveis_encontrados:
-        try:
-            endereco_bruto = imovel.get('endereco', 'N/A')
-            rua = ""
-            
-            # Tenta limpar o endereço para geocodificação
-            if '-' in endereco_bruto:
-                rua = endereco_bruto.split('-')[0].strip()
-            elif ',' in endereco_bruto:
-                rua = endereco_bruto.split(',')[0].strip()
-            else:
-                rua = endereco_bruto
-
-            if not rua or rua.lower() == "endereço não informado":
-                continue
-
-            endereco_a_buscar = f"{rua}, São Paulo, Brasil"
-            location = geolocator.geocode(endereco_a_buscar, timeout=10)
-
-            if location:
-                imoveis_plotados += 1
-                
-                # Tenta achar o preço em qualquer chave
-                preco = (imovel.get('preco_venda_rs') or 
-                         imovel.get('preco_aluguel_rs') or 
-                         imovel.get('preco') or '0')
-                
-                link = imovel.get('url_anuncio', '#')
-
-                popup_html = (f"<b>R$ {preco}</b><br>"
-                              f"<b>{imovel.get('area_m2', 'N/A')} m²</b><br>"
-                              f"<a href='{link}' target='_blank'>Ver anúncio</a>")
-
-                folium.Marker(
-                    [location.latitude, location.longitude], 
-                    popup=popup_html
-                ).add_to(mapa)
-
-        except Exception as e:
-            continue
-
-    caminho_mapa = os.path.join(PASTA_OUTPUT, "mapa_imoveis.html")
-    garantir_diretorio(caminho_mapa)
-    mapa.save(caminho_mapa)
-    print(f"🗺️ Mapa salvo em: {caminho_mapa}")
-
-
 def gerar_galeria_html(imoveis_encontrados, tipo_venda):
     if not imoveis_encontrados:
         print("A lista de imóveis está vazia. Nenhum arquivo de galeria foi criado.")
