@@ -10,10 +10,10 @@
 
 ## 📸 Demonstração
 
-| Galeria de Imóveis | Mapa de Localização |
-|:------------------:|:-------------------:|
-| *[Insira um print da sua Galeria HTML aqui]* | *[Insira um print do seu Mapa Folium aqui]* |
-| *Visualização limpa dos anúncios* | *Plotagem geográfica dos imóveis* |
+| Galeria de Imóveis |
+|:------------------:|
+| <img width="1906" height="919" alt="exemplo_html" src="https://github.com/user-attachments/assets/9f97a709-7031-4ac5-a043-5290870bf1b4" /> |
+| *Visualização limpa dos anúncios* | 
 
 ---
 
