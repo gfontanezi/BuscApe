@@ -1,7 +1,9 @@
 import time
 import re
+from selenium import webdriver 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains # Adicione esta também para garantir
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
@@ -20,7 +22,7 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
         print(f"ERRO: Falha ao iniciar o undetected-chromedriver. Verifique a instalação.")
         print(f"Erro original: {e}")
         return []
-    print(f"Acessando a URL: {url} (em modo headless)")
+    print(f"Acessando a URL: {url}")
 
     if "alugar" in url:
         chave_preco = "preco_aluguel_rs"
@@ -52,6 +54,7 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
 
     if pesquisa == 2:
         try:
+            print(f"Pesquisando pela estação: {estacao}")
             wait = WebDriverWait(driver, 15) 
 
             search_container_locator = (By.XPATH, "//div[@data-testid='cockpit-location-input']")
@@ -60,19 +63,36 @@ def buscar_imoveis_quinto_andar(url, pesquisa, estacao, criterio_de_ordenacao=No
 
             active_input_locator = (By.XPATH, "//div[@data-testid='cockpit-location-input']//input")
             active_input_field = wait.until(EC.visibility_of_element_located(active_input_locator))
-            active_input_field.send_keys("estacao " + estacao)
             
-            print("Aguardando o campo de busca se expandir (aria-expanded='true')...")
-            wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@aria-expanded='true']")))
+            active_input_field.send_keys(Keys.CONTROL + "a")
+            active_input_field.send_keys(Keys.DELETE)
+            time.sleep(0.5)
 
-            print("Campo expandido! Navegando com o teclado...")
-            time.sleep(0.5)
-            active_input_field.send_keys(Keys.ARROW_DOWN)
-            time.sleep(0.5)
-            active_input_field.send_keys(Keys.ENTER)
-            time.sleep(2)
+            texto_busca = "Estação " + estacao
+            for letra in texto_busca:
+                active_input_field.send_keys(letra)
+                time.sleep(0.01) 
+            
+            print(f"Texto '{texto_busca}' digitado. Aguardando 3 segundos para o site carregar a lista...")
+            time.sleep(3) 
+
+            xpath_primeira_opcao = "(//li[@role='option'])[1]"
+            primeira_opcao = wait.until(EC.element_to_be_clickable((By.XPATH, xpath_primeira_opcao)))
+            
+            texto_da_opcao = primeira_opcao.text
+            print(f"Opção carregada e encontrada: '{texto_da_opcao}'. Clicando...")
+            
+            primeira_opcao.click()
+            time.sleep(4) 
+
         except Exception as e:
-             print(f"Ocorreu um erro na busca por estação: {e}")
+             print(f"ERRO ao selecionar a estação: {e}")
+             print("Tentando fallback com ENTER...")
+             try:
+                 ActionChains(driver).send_keys(Keys.ENTER).perform()
+                 time.sleep(4)
+             except Exception as e_fallback: 
+                 print(f"Fallback falhou: {e_fallback}")
         
 
     seletor_card_imovel = '[data-testid="house-card-container"]'

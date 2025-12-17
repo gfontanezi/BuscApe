@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import folium
 from geopy.geocoders import Nominatim
 
@@ -9,6 +10,20 @@ def garantir_diretorio(caminho):
     pasta = os.path.dirname(caminho)
     if pasta and not os.path.exists(pasta):
         os.makedirs(pasta)
+
+def limpar_numero(valor):
+    """Garante que o valor seja um inteiro puro para ordenação correta no JS"""
+    if not valor: return 0
+    # Remove tudo que não é dígito
+    limpo = re.sub(r'[^\d]', '', str(valor))
+    return int(limpo) if limpo else 0
+
+def formatar_moeda(valor):
+    """Formata visualmente: 2500 -> 2.500"""
+    try:
+        return f"{int(valor):,}".replace(",", ".")
+    except:
+        return str(valor)
 
 def gerar_json(imoveis_encontrados, tipo_venda):
     if not imoveis_encontrados:
@@ -28,10 +43,9 @@ def gerar_json(imoveis_encontrados, tipo_venda):
 
 def gerar_mapa(imoveis_encontrados):
     if not imoveis_encontrados:
-        print("A lista de imóveis está vazia. Nenhum arquivo foi criado.")
         return
     
-    geolocator = Nominatim(user_agent="meu_scraper_de_imoveis_v4")
+    geolocator = Nominatim(user_agent="meu_scraper_de_imoveis_v5")
     mapa = folium.Map(location=[-23.5505, -46.6333], zoom_start=12)
 
     print(f"\n🗺️ Gerando mapa para {len(imoveis_encontrados)} imóveis...")
@@ -42,14 +56,15 @@ def gerar_mapa(imoveis_encontrados):
             endereco_bruto = imovel.get('endereco', 'N/A')
             rua = ""
             
-            if ',' in endereco_bruto:
-                partes = endereco_bruto.rsplit(',', 1)
-                if len(partes) > 1:
-                    rua = partes[1].strip()
+            # Tenta limpar o endereço para geocodificação
+            if '-' in endereco_bruto:
+                rua = endereco_bruto.split('-')[0].strip()
+            elif ',' in endereco_bruto:
+                rua = endereco_bruto.split(',')[0].strip()
             else:
                 rua = endereco_bruto
 
-            if not rua:
+            if not rua or rua.lower() == "endereço não informado":
                 continue
 
             endereco_a_buscar = f"{rua}, São Paulo, Brasil"
@@ -58,13 +73,16 @@ def gerar_mapa(imoveis_encontrados):
             if location:
                 imoveis_plotados += 1
                 
+                # Tenta achar o preço em qualquer chave
                 preco = (imovel.get('preco_venda_rs') or 
                          imovel.get('preco_aluguel_rs') or 
-                         imovel.get('preco') or 'N/A')
+                         imovel.get('preco') or '0')
+                
+                link = imovel.get('url_anuncio', '#')
 
                 popup_html = (f"<b>R$ {preco}</b><br>"
                               f"<b>{imovel.get('area_m2', 'N/A')} m²</b><br>"
-                              f"<a href='{imovel.get('url_anuncio', '#')}' target='_blank'>Ver anúncio</a>")
+                              f"<a href='{link}' target='_blank'>Ver anúncio</a>")
 
                 folium.Marker(
                     [location.latitude, location.longitude], 
@@ -72,7 +90,6 @@ def gerar_mapa(imoveis_encontrados):
                 ).add_to(mapa)
 
         except Exception as e:
-            print(f"!!! Erro ao processar imóvel: {e}")
             continue
 
     caminho_mapa = os.path.join(PASTA_OUTPUT, "mapa_imoveis.html")
@@ -81,16 +98,13 @@ def gerar_mapa(imoveis_encontrados):
     print(f"🗺️ Mapa salvo em: {caminho_mapa}")
 
 
-
-
 def gerar_galeria_html(imoveis_encontrados, tipo_venda):
     if not imoveis_encontrados:
         print("A lista de imóveis está vazia. Nenhum arquivo de galeria foi criado.")
         return
 
-    chave_preco = 'preco_aluguel_rs' if tipo_venda == 'alugar' else 'preco_venda_rs'
+    chave_preco_principal = 'preco_aluguel_rs' if tipo_venda == 'alugar' else 'preco_venda_rs'
 
-    
     html_template = """
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -100,7 +114,8 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
     <title>Imóveis Encontrados</title>
     <style>
         :root {{
-            --primary-color: #007A7C;
+            --primary-color: #007A7C; /* Cor QuintoAndar */
+            --vivareal-color: #1a47ba; /* Cor VivaReal */
             --background-color: #f0f2f5;
             --card-background: #ffffff;
             --text-color: #333;
@@ -132,27 +147,35 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
         .card:hover {{ transform: translateY(-8px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }}
         .card img {{ width: 100%; height: 220px; object-fit: cover; background-color: #eee; }}
         .card-info {{ padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }}
-        .card-info .address {{ margin: 0 0 5px 0; font-size: 1em; color: var(--text-color); font-weight: 500; }}
+        .card-info .address {{ margin: 0 0 5px 0; font-size: 1em; color: var(--text-color); font-weight: 500; min-height: 44px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
         .card-info .price {{ font-size: 1.5em; font-weight: bold; color: var(--primary-color); margin: 5px 0; }}
         .condo-price {{ font-size: 0.9em; color: var(--light-text-color); margin: -5px 0 15px 2px; }}
         .features {{ display: flex; justify-content: space-around; align-items: center; color: var(--light-text-color); margin: 10px 0 5px 0; padding: 10px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }}
         .features span {{ display: flex; align-items: center; gap: 6px; font-size: 0.95em; }}
         .area-price {{ text-align: center; color: #333; font-size: 0.9em; margin: 10px 0 15px 0; }}
+        
         .card-info .link-button {{ display: block; background-color: var(--primary-color); color: white; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; margin-top: auto; transition: background-color 0.2s; }}
         .card-info .link-button:hover {{ background-color: #005f5f; }}
+        
+        /* Estilo específico para botão do VivaReal */
+        .card-info .link-button.vivareal {{ background-color: var(--vivareal-color); }}
+        .card-info .link-button.vivareal:hover {{ background-color: #0f2c7a; }}
+
         #not-found-message {{ display: none; width: 100%; text-align: center; padding: 50px; font-size: 1.2em; color: var(--light-text-color); }}
+        .badge {{ position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }}
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>Imóveis Encontrados</h1>
+        <h1>Imóveis Encontrados ({total_imoveis})</h1>
         <div class="controls">
-            <input type="text" id="search-input" placeholder="Buscar por endereço...">
+            <input type="text" id="search-input" placeholder="Filtrar por endereço...">
             <div class="sort-buttons">
                 <button data-sort="price" data-order="desc">Preço Maior</button>
                 <button data-sort="price" data-order="asc">Preço Menor</button>
                 <button data-sort="area" data-order="desc">Área Maior</button>
                 <button data-sort="area" data-order="asc">Área Menor</button>
+                <button data-sort="m2price" data-order="asc">R$/m² Menor</button>
             </div>
         </div>
     </header>
@@ -169,60 +192,80 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
     """
 
     cards_list = []
+    
     for imovel in imoveis_encontrados:
-        # Pega todos os dados com valores padrão seguros
-        preco_str = imovel.get(chave_preco, '0')
-        area_str = imovel.get('area_m2', '0')
-        quartos_str = imovel.get('quartos', '0')
-        condominio_str = imovel.get('preco_condominio_rs', '0')
-
-        # Cálculo do preço por m²
-        preco_m2_formatado = "N/A"
-        preco_m2_num = 0
-        try:
-            preco_num = float(preco_str)
-            area_num = float(area_str)
-            if area_num > 0:
-                preco_m2_num = round(preco_num / area_num)
-                preco_m2_formatado = f"{preco_m2_num:,}".replace(",", ".")
-        except (ValueError, TypeError): pass
-
-        preco_formatado = f"{int(preco_str):,}".replace(",", ".") if preco_str.isdigit() else preco_str
+        # --- TRATAMENTO E FORMATAÇÃO ---
         
-        condominio_html = ''
-        if condominio_str == 'Não informado':
-            condominio_html = '<p class="condo-price">Condomínio não informado</p>'
-            condominio_str = '0'
-        elif condominio_str and int(condominio_str) > 0:
-            condominio_formatado = f"{int(condominio_str):,}".replace(",", ".")
-            condominio_html = f'<p class="condo-price">+ R$ {condominio_formatado} Condomínio</p>'
+        # Define preço (busca em todas as chaves possíveis)
+        raw_price = imovel.get(chave_preco_principal)
+        if not raw_price or str(raw_price) == '0':
+            raw_price = imovel.get('preco_venda_rs') or imovel.get('preco_aluguel_rs') or '0'
+        
+        preco_num = limpar_numero(raw_price)
+        preco_visivel = formatar_moeda(preco_num)
 
-        # Montagem do card final
+        # Área e Quartos
+        area_num = limpar_numero(imovel.get('area_m2', '0'))
+        quartos_num = limpar_numero(imovel.get('quartos', '0'))
+
+        # Condomínio
+        condo_num = limpar_numero(imovel.get('preco_condominio_rs', '0'))
+        condominio_html = ''
+        if condo_num > 0:
+            condo_visivel = formatar_moeda(condo_num)
+            condominio_html = f'<p class="condo-price">+ R$ {condo_visivel} Condomínio</p>'
+        else:
+            condominio_html = '<p class="condo-price" style="opacity:0">.</p>'
+
+        # Preço por m²
+        preco_m2 = 0
+        preco_m2_visivel = "N/A"
+        if area_num > 0 and preco_num > 0:
+            preco_m2 = round(preco_num / area_num)
+            preco_m2_visivel = formatar_moeda(preco_m2)
+
+        # --- LÓGICA DO BOTÃO E ORIGEM ---
+        url = imovel.get('url_anuncio', '#')
+        
+        texto_botao = "Ver Anúncio"
+        classe_botao = ""
+        badge_origem = "Imóvel"
+        
+        if "vivareal" in url.lower():
+            texto_botao = "Ver no Viva Real"
+            classe_botao = "vivareal"
+            badge_origem = "VivaReal"
+        elif "quintoandar" in url.lower():
+            texto_botao = "Ver no QuintoAndar"
+            badge_origem = "QuintoAndar"
+        
+        # --- MONTAGEM DO HTML DO CARD ---
         card_html = f"""
-        <div class="card" data-price="{preco_str}" data-area="{area_str}" data-preco-m2="{preco_m2_num}">
-            <img src="{imovel.get('url_imagem', '')}" alt="Foto do imóvel" loading="lazy">
+        <div class="card" data-price="{preco_num}" data-area="{area_num}" data-m2price="{preco_m2}">
+            <div style="position:relative">
+                <span class="badge">{badge_origem}</span>
+                <img src="{imovel.get('url_imagem', '')}" alt="Foto do imóvel" loading="lazy" onerror="this.src='https://via.placeholder.com/300x200?text=Sem+Foto'">
+            </div>
             <div class="card-info">
-                <h3 class="address">{imovel.get('endereco', 'Endereço não disponível')}</h3>
-                <p class="price">R$ {preco_formatado}</p>
+                <h3 class="address" title="{imovel.get('endereco', '')}">{imovel.get('endereco', 'Endereço não disponível')}</h3>
+                <p class="price">R$ {preco_visivel}</p>
                 {condominio_html}
                 
-                <!-- SEÇÃO 'FEATURES' CORRIGIDA PARA INCLUIR QUARTOS -->
                 <div class="features">
-                    <span><strong>{area_str}</strong> m²</span>
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px"><path d="M20 9.55V3.5c0-.83-.67-1.5-1.5-1.5H5.5C4.67 2 4 2.67 4 3.5v6.05c-1.69.88-2.85 2.63-3 4.7V19.5c0 .83.67 1.5 1.5 1.5H5v-2h14v2h2.5c.83 0 1.5-.67 1.5-1.5v-5.25c-.15-2.07-1.31-3.82-3-4.7zM18 8H6V4h12v4z"/></svg>
-                        {quartos_str} quarto(s)
-                    </span>
-                    <!-- Removi as outras informações, como solicitado -->
+                    <span><strong>{area_num}</strong> m²</span>
+                    <span>|</span>
+                    <span>{quartos_num} quartos</span>
                 </div>
                 
-                <p class="area-price"><b>R$ {preco_m2_formatado} / m²</b></p>
-                <a class="link-button" href="{imovel.get('url_anuncio', '#')}" target="_blank">Ver Anúncio no QuintoAndar</a>
+                <p class="area-price">R$ {preco_m2_visivel} / m²</p>
+                
+                <a class="link-button {classe_botao}" href="{url}" target="_blank">{texto_botao}</a>
             </div>
         </div>
         """
         cards_list.append(card_html)
     
+    # --- JAVASCRIPT ---
     js_script = """
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
@@ -242,8 +285,9 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
                 let visibleCards = 0;
 
                 allCards.forEach(card => {
-                    const address = card.querySelector('.address').textContent.toLowerCase();
-                    const matches = address.includes(searchTerm);
+                    const textContent = card.innerText.toLowerCase();
+                    const matches = textContent.includes(searchTerm);
+                    
                     card.style.display = matches ? 'flex' : 'none';
                     if(matches) visibleCards++;
                 });
@@ -258,9 +302,8 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
 
             function sortCards(sortBy, sortOrder) {
                 const sortedCards = allCards.sort((a, b) => {
-                    const valA = parseFloat(a.dataset[sortBy]);
-                    const valB = parseFloat(b.dataset[sortBy]);
-                    if (isNaN(valA) || isNaN(valB)) return 0;
+                    const valA = parseFloat(a.dataset[sortBy]) || 0;
+                    const valB = parseFloat(b.dataset[sortBy]) || 0;
                     return sortOrder === 'asc' ? valA - valB : valB - valA;
                 });
 
@@ -285,7 +328,11 @@ def gerar_galeria_html(imoveis_encontrados, tipo_venda):
         });
     """
 
-    final_html = html_template.format(cards_html="".join(cards_list), js_script=js_script)
+    final_html = html_template.format(
+        cards_html="".join(cards_list), 
+        js_script=js_script,
+        total_imoveis=len(imoveis_encontrados)
+    )
 
     caminho_galeria = os.path.join(PASTA_OUTPUT, "galeria_imoveis.html")
     garantir_diretorio(caminho_galeria)
